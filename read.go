@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"strconv"
@@ -28,9 +29,11 @@ func newCache(directory string) func() ([]os.FileInfo, error) {
 		}
 
 		newFiles := make([]os.FileInfo, 0)
+
 		for _, file := range files {
 			if file.IsDir() {
 				fileCache[file.Name()] = struct{}{}
+				fmt.Println("I'm dir")
 			}
 			if _, ok := fileCache[file.Name()]; !ok {
 				newFiles = append(newFiles, file)
@@ -44,7 +47,7 @@ func newCache(directory string) func() ([]os.FileInfo, error) {
 func GetQueries(directory string, qCh chan<- Query) {
 	checkDir := newCache(directory)
 
-	ticker := time.NewTicker(time.Minute)
+	ticker := time.NewTicker(time.Second * 5)
 	defer ticker.Stop()
 
 	for {
@@ -56,7 +59,8 @@ func GetQueries(directory string, qCh chan<- Query) {
 
 		if len(files) > 0 {
 			for _, file := range files {
-				query, err := ReadQuery(file.Name())
+				query, err := ReadQuery(directory + "/" + file.Name())
+
 				if err == nil {
 					var q Query
 					q.Q = query

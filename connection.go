@@ -34,6 +34,6 @@ func ReadConnectionConf(filename string) ConnectionConf {
 
 	jsonDecoder := json.NewDecoder(confFile)
 	var cc ConnectionConf
-	jsonDecoder.Decode(cc)
+	jsonDecoder.Decode(&cc)
 	return cc
 }
