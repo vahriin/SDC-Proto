@@ -5,14 +5,9 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
-)
 
-type Query struct {
-	Q string
-	U string
-	T time.Time
-}
+	"github.com/vahriin/SDC/model"
+)
 
 func flags() (string, string, string) {
 	confFile := flag.String("c", "", "path to your config file")
@@ -26,10 +21,10 @@ func flags() (string, string, string) {
 func main() {
 	confFile, watchDir, ansFile := flags()
 
-	connConf := ReadConnectionConf(confFile)
+	connConf := model.ReadConnectionConf(confFile)
 
-	queryCh := make(chan Query)
-	resultCh := make(chan Result)
+	queryCh := make(chan model.Query)
+	resultCh := make(chan model.Result)
 
 	go GetQueries(watchDir, queryCh)
 	go CheckQuery(&connConf, ansFile, queryCh, resultCh)

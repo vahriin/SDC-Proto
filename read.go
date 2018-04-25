@@ -7,6 +7,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/vahriin/SDC/model"
 )
 
 func ReadQuery(filename string) (string, error) {
@@ -44,7 +46,7 @@ func newCache(directory string) func() ([]os.FileInfo, error) {
 	}
 }
 
-func GetQueries(directory string, qCh chan<- Query) {
+func GetQueries(directory string, qCh chan<- model.Query) {
 	checkDir := newCache(directory)
 
 	ticker := time.NewTicker(time.Second * 5)
@@ -62,7 +64,7 @@ func GetQueries(directory string, qCh chan<- Query) {
 				query, err := ReadQuery(directory + "/" + file.Name())
 
 				if err == nil {
-					var q Query
+					var q model.Query
 					q.Q = query
 					q.T = file.ModTime()
 					q.U = file.Name()
