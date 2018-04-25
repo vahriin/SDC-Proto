@@ -10,9 +10,9 @@ import (
 )
 
 func flags() (string, string, string) {
-	confFile := flag.String("c", "", "path to your config file")
-	watchDir := flag.String("d", "", "path to directory for watching")
-	ansFile := flag.String("a", "", "path to your answer file")
+	confFile := flag.String("c", "config.json", "path to your config file")
+	watchDir := flag.String("d", "queries", "path to directory for watching")
+	ansFile := flag.String("a", "answer.txt", "path to your answer file")
 
 	flag.Parse()
 	return *confFile, *watchDir, *ansFile
@@ -26,7 +26,7 @@ func main() {
 	queryCh := make(chan model.Query)
 	resultCh := make(chan model.Result)
 
-	go GetQueries(watchDir, queryCh)
+	go WatchDir(watchDir, queryCh)
 	go CheckQuery(&connConf, ansFile, queryCh, resultCh)
 	go WriteTop("rating.csv", resultCh)
 

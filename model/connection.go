@@ -18,7 +18,7 @@ func DefaultConnectionConf() ConnectionConf {
 	var cc ConnectionConf
 	cc.DbName = "sqltest"
 	cc.User = "sqltest_user"
-	cc.Password = ""
+	cc.Password = "sqltest_password"
 	cc.Host = "localhost"
 	cc.Port = "5432"
 

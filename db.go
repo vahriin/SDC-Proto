@@ -9,7 +9,7 @@ func CheckQuery(conf *model.ConnectionConf, ansFile string, qCh <-chan model.Que
 
 	defer processor.Close()
 
-	answer := GetAns(ansFile)
+	answer := ReadAns(ansFile)
 
 	for query := range qCh {
 		var result model.Result

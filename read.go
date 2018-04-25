@@ -46,7 +46,7 @@ func newCache(directory string) func() ([]os.FileInfo, error) {
 	}
 }
 
-func GetQueries(directory string, qCh chan<- model.Query) {
+func WatchDir(directory string, qCh chan<- model.Query) {
 	checkDir := newCache(directory)
 
 	ticker := time.NewTicker(time.Second * 5)
@@ -76,7 +76,7 @@ func GetQueries(directory string, qCh chan<- model.Query) {
 	}
 }
 
-func GetAns(ansFile string) int64 {
+func ReadAns(ansFile string) int64 {
 	answerB, err := ioutil.ReadFile(ansFile)
 	if err != nil {
 		panic(err)
